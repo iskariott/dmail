@@ -11,6 +11,7 @@
 1. Add wallet data in wallet_data.config.js
 
 For every wallet paste object bellow comma-separated.
+
 Field type it's wallet name: ArgentX 0, Braavos 1
 ```
  {
