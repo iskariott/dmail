@@ -37,7 +37,8 @@ function waitForGas(account, txPayload, ethPrice) {
 async function send(walletData, provider, ethPrice) {
   let pkey = '';
   let wallet = '';
-  if (walletData.type) {
+  console.log('walletData = ', walletData);
+  if (!walletData.type) {
     pkey = await getPKeyFromMnemonicArgent(walletData.mnemonic);
     wallet = await getArgentAddress(pkey);
   } else {

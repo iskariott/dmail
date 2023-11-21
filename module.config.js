@@ -8,7 +8,7 @@ const DELAY = [60, 120];
 Відправка транзакцій здійснється в тому порядку в якому вказано.
 Нумерація починається з нуля. Номери відповідають порядку мнемонічних слів в файлі mnemonic.js
 */
-const ACC_NUMBERS = [10, 2, 4, 11];
+const ACC_NUMBERS = [2, 4, 11];
 
 /*
 Максимальний газ в $ за транзакцію.
@@ -16,8 +16,15 @@ const ACC_NUMBERS = [10, 2, 4, 11];
 */
 const ALLOWED_FEE = 0.1;
 
+/*
+0 - дані кошелька будуть зчитуватися з js файла wallet_data.config.js
+1 - дані кошелька будуть зчитуватися з xlsx файла wallet_data.config.xlsx (за питаннями в тг)
+*/
+const READ_DATA_TYPE = 0;
+
 module.exports = {
   DELAY,
   ACC_NUMBERS,
   ALLOWED_FEE,
+  READ_DATA_TYPE,
 };

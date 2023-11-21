@@ -4,6 +4,7 @@ const { mnemonicToSeedSync } = require('@scure/bip39');
 const { HDKey } = require('@scure/bip32');
 const { sha256 } = require('ethers');
 const readline = require('readline');
+const XLSX = require('xlsx');
 
 async function getETHPrice() {
   const response = await fetch(
@@ -143,26 +144,20 @@ function cliCountDown(time_s) {
   });
 }
 
-function cliTimer(stop) {
-  return new Promise((resolve) => {
-    function updateLine(sec) {
-      const t = new Date(sec * 1000).toISOString().slice(11, 19);
-      readline.clearLine(process.stdout, 0);
-      readline.cursorTo(process.stdout, 0);
-      process.stdout.write(`\x1b[32mWaiting for gas... ${t}\x1b[0m`);
-    }
-
-    let time_s = 0;
-    let timer = setInterval(() => {
-      time_s += 1;
-      if (stop) {
-        clearInterval(timer);
-        resolve();
-      } else {
-        updateLine(time_s);
-      }
-    }, 1000);
-  });
+function excelToArray() {
+  try {
+    const resp = XLSX.readFile('./wallet_data.config.xlsx', { type: 'buffer' });
+    const data = resp.Sheets.list1;
+    return Object.keys(data).flatMap((key) => {
+      if (key.slice(0, 1) === 'A') {
+        const rowId = key.slice(1);
+        const type = data['B' + rowId].v === 'argent' ? 0 : 1;
+        return { mnemonic: data[key].v, type };
+      } else return [];
+    });
+  } catch (e) {
+    throw e;
+  }
 }
 
 module.exports = {
@@ -176,6 +171,6 @@ module.exports = {
   getPKeyFromMnemonicArgent,
   getRandomString,
   cliCountDown,
-  cliTimer,
+  excelToArray,
   getETHPrice,
 };
