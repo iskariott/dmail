@@ -6,6 +6,14 @@ const { sha256 } = require('ethers');
 const readline = require('readline');
 const XLSX = require('xlsx');
 
+const c = {
+  grn: (t) => `\x1b[32m${t}\x1b[0m`,
+  dim: (t) => `\x1b[90m${t}\x1b[0m`,
+  yel: (t) => `\x1b[33m${t}\x1b[0m`,
+  red: (t) => `\x1b[31m${t}\x1b[0m`,
+  blu: (t) => `\x1b[34m${t}\x1b[0m`,
+};
+
 async function getETHPrice() {
   const response = await fetch(
     'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd',
@@ -126,7 +134,7 @@ function cliCountDown(time_s) {
     function updateLine(content, finished = false) {
       readline.clearLine(process.stdout, 0);
       readline.cursorTo(process.stdout, 0);
-      !finished && process.stdout.write(`\x1b[32mDelay: ${content}s\x1b[0m`);
+      !finished && process.stdout.write(`${c.dim('Delay: ' + content + 's')}`);
     }
 
     updateLine(time_s);
@@ -173,4 +181,5 @@ module.exports = {
   cliCountDown,
   excelToArray,
   getETHPrice,
+  c,
 };

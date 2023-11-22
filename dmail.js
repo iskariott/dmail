@@ -8,12 +8,13 @@ const {
   getPKeyFromMnemonicBraavos,
   getBraavosAddress,
   getRandomString,
+  c,
 } = require('./utils.js');
 const { ALLOWED_FEE } = require('./module.config.js');
 const readline = require('readline');
 
 function waitForGas(account, txPayload, ethPrice) {
-  console.log('\x1b[90mWaiting for gas...\x1b[0m');
+  console.log(`${c.dim('Waiting for gas...')}`);
   const updateLine = (content, finish = false) => {
     readline.clearLine(process.stdout, 0);
     readline.cursorTo(process.stdout, 0);
@@ -24,7 +25,7 @@ function waitForGas(account, txPayload, ethPrice) {
     let timer = setInterval(async () => {
       const { overall_fee } = await account.estimateInvokeFee(txPayload);
       fee = (parseInt(overall_fee) / Math.pow(10, 18)) * ethPrice;
-      updateLine(`\x1b[90mFee ${fee.toFixed(4)}$\x1b[0m`);
+      updateLine(` Fee ${c.yel(fee.toFixed(4))}$`);
       if (fee && fee <= ALLOWED_FEE) {
         clearInterval(timer);
         updateLine('', true);
@@ -37,7 +38,6 @@ function waitForGas(account, txPayload, ethPrice) {
 async function send(walletData, provider, ethPrice) {
   let pkey = '';
   let wallet = '';
-  console.log('walletData = ', walletData);
   if (!walletData.type) {
     pkey = await getPKeyFromMnemonicArgent(walletData.mnemonic);
     wallet = await getArgentAddress(pkey);
@@ -66,10 +66,10 @@ async function send(walletData, provider, ethPrice) {
   if (fee > ALLOWED_FEE) {
     await waitForGas(account, txPayload, ethPrice);
   }
-  const executeHash = await account.execute(txPayload);
-  return await provider.getTransactionReceipt(executeHash.transaction_hash);
-  // const testhash = '0x04b419c08722e0917bb6190f6f906fc2a4e12ca1ddbc8db40632d29ea4620f47';
-  // return await provider.getTransactionReceipt(testhash);
+  // const executeHash = await account.execute(txPayload);
+  // return await provider.getTransactionReceipt(executeHash.transaction_hash);
+  const testhash = '0x04b419c08722e0917bb6190f6f906fc2a4e12ca1ddbc8db40632d29ea4620f47';
+  return await provider.getTransactionReceipt(testhash);
 }
 
 module.exports = {

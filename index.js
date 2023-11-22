@@ -1,6 +1,6 @@
 const { RpcProvider } = require('starknet');
 const { DELAY, ACC_NUMBERS, READ_DATA_TYPE } = require('./module.config.js');
-const { getETHPrice, cliCountDown, excelToArray } = require('./utils.js');
+const { getETHPrice, cliCountDown, excelToArray, c } = require('./utils.js');
 const { send } = require('./dmail.js');
 
 (async () => {
@@ -23,15 +23,12 @@ const { send } = require('./dmail.js');
         execution_status: status,
         actual_fee: fee,
       } = await send(wallet_data[ACC_NUMBERS[i]], provider, ethPrice);
-      const strHash = `hash: \x1b[34m${hash}\x1b[0m`;
-      const strFee = `fee: \x1b[33m ${((parseInt(fee) / Math.pow(10, 18)) * ethPrice).toFixed(
-        2,
-      )}\x1b[0m$`;
-      const strStatus =
-        status === 'SUCCEEDED' ? `\x1b[32m${status}\x1b[0m` : `\x1b[31m${status}\x1b[0m`;
-      console.log(
-        `\x1b[33m${ACC_NUMBERS[i]}\x1b[0m. ${strHash} / ${strFee} / status: ${strStatus}`,
-      );
+
+      const strHash = `hash: ${c.blu(hash)}`;
+      const strFee = `fee: ${c.yel(((parseInt(fee) / Math.pow(10, 18)) * ethPrice).toFixed(2))}$`;
+      const strStatus = status === 'SUCCEEDED' ? `${c.grn(status)}` : `${c.red(status)}`;
+      console.log(`${c.yel(ACC_NUMBERS[i])}. ${strHash} / ${strFee} / status: ${strStatus}`);
+
       await cliCountDown(Math.floor(Math.random() * (DELAY[1] - DELAY[0] + 1) + DELAY[0]));
     }
   } catch (error) {

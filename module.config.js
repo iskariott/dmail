@@ -14,13 +14,13 @@ const ACC_NUMBERS = [2, 4, 11];
 Максимальний газ в $ за транзакцію.
 Якщо газ буде більший скрипт буде очікувати і кожну хвилину перевіряти чи газ допустимий.
 */
-const ALLOWED_FEE = 0.1;
+const ALLOWED_FEE = 0.31;
 
 /*
 0 - дані кошелька будуть зчитуватися з js файла wallet_data.config.js
 1 - дані кошелька будуть зчитуватися з xlsx файла wallet_data.config.xlsx (за питаннями в тг)
 */
-const READ_DATA_TYPE = 0;
+const READ_DATA_TYPE = 1;
 
 module.exports = {
   DELAY,
