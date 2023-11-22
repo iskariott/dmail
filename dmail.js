@@ -66,10 +66,10 @@ async function send(walletData, provider, ethPrice) {
   if (fee > ALLOWED_FEE) {
     await waitForGas(account, txPayload, ethPrice);
   }
-  // const executeHash = await account.execute(txPayload);
-  // return await provider.getTransactionReceipt(executeHash.transaction_hash);
-  const testhash = '0x04b419c08722e0917bb6190f6f906fc2a4e12ca1ddbc8db40632d29ea4620f47';
-  return await provider.getTransactionReceipt(testhash);
+  const executeHash = await account.execute(txPayload);
+  return await provider.getTransactionReceipt(executeHash.transaction_hash);
+  // const testhash = '0x04b419c08722e0917bb6190f6f906fc2a4e12ca1ddbc8db40632d29ea4620f47';
+  // return await provider.getTransactionReceipt(testhash);
 }
 
 module.exports = {
