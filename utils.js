@@ -37,6 +37,10 @@ function encoder(message) {
   return t.join('');
 }
 
+function getRandomBtwInterval(min, max) {
+  return Math.floor(Math.random() * (min - max + 1) + max);
+}
+
 function hashString(str) {
   return sha256(encoder(str)).slice(2);
 }
@@ -159,13 +163,25 @@ function excelToArray() {
     return Object.keys(data).flatMap((key) => {
       if (key.slice(0, 1) === 'A') {
         const rowId = key.slice(1);
-        const type = data['B' + rowId].v === 'argent' ? 0 : 1;
-        return { mnemonic: data[key].v, type };
+        const mnemonic = data['B' + rowId].v;
+        const type = data['C' + rowId].v === 'argent' ? 0 : 1;
+        return { address: data[key].v, mnemonic, type };
       } else return [];
     });
   } catch (e) {
     throw e;
   }
+}
+
+function shuffle(array) {
+  let currentIndex = array.length;
+  while (currentIndex > 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }
 
 module.exports = {
@@ -182,4 +198,6 @@ module.exports = {
   excelToArray,
   getETHPrice,
   c,
+  shuffle,
+  getRandomBtwInterval,
 };
